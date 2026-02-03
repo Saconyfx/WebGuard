@@ -1,3 +1,3 @@
 ## WebGuard
 
-Scan for vulnerbalities 
+Scan for Vulnerabilities
