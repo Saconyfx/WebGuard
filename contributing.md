@@ -56,5 +56,5 @@ Make focused and minimal changes
 Disclaimer
 
 All contributions are reviewed at the discretion of the project maintainers. Submission of a contribution does not guarantee it will be accepted or merged.
-<img width="468" height="635" alt="image" src="https://github.com/user-attachments/assets/50f40056-ebcb-4f7f-a7da-790e68e3b0d8" />
+
 
