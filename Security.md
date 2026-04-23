@@ -1,6 +1,4 @@
-## Security
-
-Security Policy
+## Security Policy
 
 Overview
 
