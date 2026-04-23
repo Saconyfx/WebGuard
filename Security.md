@@ -1,6 +1,6 @@
 ## Security Policy
 
-Overview
+### Overview
 
 WebGuard is a web-based security tool developed as a school project. It is designed to scan web applications for vulnerabilities and analyze uploaded source code for potential security weaknesses. While basic security measures are implemented, the project is intended for educational purposes only.
 
@@ -8,7 +8,7 @@ This project is not actively maintained for long-term development or feature exp
 
 
 
-Project Status
+### Project Status
 
 WebGuard is a completed academic project. There are currently no plans for continuous development, upgrades, or feature expansion beyond its current state.
 
@@ -16,14 +16,14 @@ That said, we are open to receiving and addressing valid security vulnerability 
 
 
 
-Reporting a Vulnerability
+### Reporting a Vulnerability
 
 If you discover a security vulnerability in this project, please report it responsibly.
 
 How to Report
 
 * Open an issue in this repository (if appropriate), or
-* Contact the maintainers directly
+* Contact us directly
 
 Please include:
 
@@ -34,7 +34,7 @@ Please include:
 
 
 
-Security Considerations
+### Security Considerations
 
 * User inputs (URLs and file uploads) are validated before processing
 * Uploaded files are handled safely and are not executed directly
@@ -44,7 +44,7 @@ Security Considerations
 
 
 
-Responsible Use
+### Responsible Use
 
 Users must:
 
@@ -54,7 +54,7 @@ Users must:
 
 
 
-Limitations
+### Limitations
 
 * The system performs basic vulnerability detection and may not identify all security issues
 * It is not intended for production or professional security auditing
@@ -62,7 +62,5 @@ Limitations
 
 
 
-
-Disclaimer
 
 This project is developed for educational purposes only. The authors are not responsible for misuse, unauthorized testing, or any consequences arising from the use of this tool.
