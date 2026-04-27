@@ -29,7 +29,7 @@ The File Upload Scanner accepts source files in these languages:
 Requires [Docker](https://docs.docker.com/get-docker/) only.
 
 ```bash
-git clone https://github.com/<you>/webguard.git
+git clone https://github.com/saconyfx/webguard.git
 cd webguard
 docker compose up
 ```
@@ -158,16 +158,3 @@ That said:
 
 ---
 
-## Roadmap
-
-- [x] File upload scanner (4-tool pipeline)
-- [ ] URL scanner (httpx + custom header/TLS checks)
-- [ ] Code Review (paste) backend
-- [ ] Optional Nuclei integration for URL CVE checks
-- [ ] Bulk scan (drop a folder, scan all files)
-
----
-
-## License
-
-MIT.
