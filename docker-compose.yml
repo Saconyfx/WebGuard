@@ -1,0 +1,20 @@
+services:
+  webguard:
+    build: .
+    container_name: webguard
+    ports:
+      - "9089:8000"
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+    # Security: read-only root FS except /tmp
+    read_only: true
+    tmpfs:
+      - /tmp/webguard:size=256M
+      - /tmp:size=512M    # sqlmap & XSStrike write logs/sessions here
+    # Resource caps so a runaway scan can't kill the host
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2.0"
