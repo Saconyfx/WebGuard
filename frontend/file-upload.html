@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebGuard | File Upload</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- PrismJS for syntax highlighting in code snippets -->
+  <script src="https://cdn.jsdelivr.net/npm/[email protected]/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/[email protected]/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__inner">
+      <div class="header__brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 2L4 7V15C4 22.5 9 28.5 16 30C23 28.5 28 22.5 28 15V7L16 2Z" fill="white" fill-opacity="0.15"/>
+            <path d="M16 2L4 7V15C4 22.5 9 28.5 16 30C23 28.5 28 22.5 28 15V7L16 2Z" stroke="white" stroke-width="1.5"/>
+            <path d="M11 16L14.5 19.5L21 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">WebGuard</div>
+          <div class="brand-tagline">Security Analysis Platform</div>
+        </div>
+      </div>
+      <nav class="header__nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="scan.html" class="nav-link nav-link--active">Scan Console</a>
+      </nav>
+      <div class="header__actions">
+        <a href="#" class="header-link">Documentation</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="main__inner">
+
+      <div class="scan-subnav">
+        <a href="scan.html" class="scan-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          All scanners
+        </a>
+        <div class="scan-tabs">
+          <a href="url-scan.html" class="scan-tabs__link">URL</a>
+          <a href="file-upload.html" class="scan-tabs__link scan-tabs__link--active">File</a>
+          <a href="code-review.html" class="scan-tabs__link">Code</a>
+        </div>
+      </div>
+
+      <div class="page-header">
+        <div class="page-header__text">
+          <div class="page-eyebrow">
+            <span class="page-eyebrow__dot"></span>
+            File Upload
+          </div>
+          <h1 class="page-title">Analyze a source file</h1>
+          <p class="page-description">
+            Static analysis on uploaded source files. Detects hardcoded secrets, unsafe function calls, weak cryptography, and dependencies with known CVEs.
+          </p>
+        </div>
+      </div>
+
+      <section class="console">
+        <div class="console__body">
+          <form class="form" id="upload-form" novalidate>
+            <div class="form-group">
+              <label class="form-label">Source file</label>
+              <div class="drop-zone" id="drop-zone">
+                <input type="file" id="file-input" accept=".py,.js,.ts,.jsx,.tsx,.java,.php,.rb,.go" class="drop-zone__input" />
+                <div class="drop-zone__icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div class="drop-zone__title">Drop file here or <span class="drop-zone__link">browse</span></div>
+                <div class="drop-zone__meta">
+                  <span class="ext-pill">.py</span>
+                  <span class="ext-pill">.js</span>
+                  <span class="ext-pill">.ts</span>
+                  <span class="ext-pill">.java</span>
+                  <span class="ext-pill">.php</span>
+                  <span class="ext-pill">.rb</span>
+                  <span class="ext-pill">.go</span>
+                </div>
+                <div class="drop-zone__hint">Max size: 10 MB per file</div>
+              </div>
+
+              <div class="file-card" id="file-card" hidden>
+                <div class="file-card__icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div class="file-card__info">
+                  <div class="file-card__name" id="file-name">filename.py</div>
+                  <div class="file-card__meta"><span id="file-size">0 KB</span> · <span id="file-type">Python</span></div>
+                </div>
+                <button type="button" class="file-card__remove" id="file-remove">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+
+              <div class="form-error" id="file-error" role="alert"></div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn--primary btn--lg" id="run-upload">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Analyze file
+              </button>
+              <button type="button" class="btn btn--secondary btn--lg" id="reset-upload">Reset</button>
+            </div>
+          </form>
+
+          <div class="progress-block" id="upload-progress" hidden>
+            <div class="progress-block__head">
+              <span class="progress-block__label" id="upload-progress-label">Loading file...</span>
+              <span class="progress-block__pct" id="upload-progress-pct">0%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-bar__fill" id="upload-progress-fill"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="results" id="results-section" hidden>
+        <div class="results__header">
+          <div>
+            <h2 class="results__title">Scan Results</h2>
+            <div class="results__meta" id="results-meta"></div>
+          </div>
+          <div class="results__actions">
+            <button class="btn btn--secondary btn--sm" id="export-json">Export JSON</button>
+            <button class="btn btn--secondary btn--sm" id="export-pdf">Export PDF</button>
+            <button class="btn btn--secondary btn--sm" id="copy-clipboard">Copy</button>
+          </div>
+        </div>
+        <div class="severity-summary" id="severity-summary"></div>
+        <div class="results__table-wrap">
+          <table class="results-table">
+            <thead><tr>
+              <th style="width:50px">#</th>
+              <th style="width:100px">Severity</th>
+              <th style="width:60px">Line</th>
+              <th style="width:140px">Category</th>
+              <th>Finding</th>
+              <th style="width:130px">Code</th>
+              <th style="width:100px">Tool</th>
+              <th style="width:90px">Status</th>
+            </tr></thead>
+            <tbody id="results-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__left">
+        <span>© 2026 WebGuard Security</span>
+        <a href="#" class="footer__link">Privacy</a>
+        <a href="#" class="footer__link">Terms</a>
+      </div>
+      <div class="footer__right">
+        <span class="footer__build">Build: 2.1.0-ent · commit <code>a3f9c7d</code></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="wg-shared.js"></script>
+  <script>
+  (function () {
+    const { $, showFieldError, hideFieldError, runStages, renderResults, hideResults, formatBytes } = WG;
+    let scanning = false;
+    let selectedFile = null;
+
+    const fileInput = $('#file-input');
+    const dropZone = $('#drop-zone');
+    const fileCard = $('#file-card');
+    const fileError = $('#file-error');
+    const runBtn = $('#run-upload');
+    const resetBtn = $('#reset-upload');
+
+    const allowedExts = ['py', 'js', 'ts', 'jsx', 'tsx', 'java', 'php', 'rb', 'go'];
+    const extLabels = { py: 'Python', js: 'JavaScript', ts: 'TypeScript', jsx: 'React JSX', tsx: 'React TSX', java: 'Java', php: 'PHP', rb: 'Ruby', go: 'Go' };
+    const maxSize = 10 * 1024 * 1024;
+
+    function validateFile(f) {
+      if (!f) return 'No file selected.';
+      const ext = f.name.split('.').pop().toLowerCase();
+      if (!allowedExts.includes(ext)) return `Unsupported file type (.${ext}) — allowed: ${allowedExts.map(e => '.' + e).join(', ')}`;
+      if (f.size > maxSize) return `File too large (${(f.size / 1024 / 1024).toFixed(2)} MB) — maximum is 10 MB.`;
+      return null;
+    }
+
+    function setFile(f) {
+      hideFieldError(fileError);
+      const err = validateFile(f);
+      if (err) { showFieldError(fileError, err); clearFile(); return; }
+      selectedFile = f;
+      const ext = f.name.split('.').pop().toLowerCase();
+      $('#file-name').textContent = f.name;
+      $('#file-size').textContent = formatBytes(f.size);
+      $('#file-type').textContent = extLabels[ext] || 'Unknown';
+      fileCard.hidden = false;
+    }
+
+    function clearFile() {
+      selectedFile = null;
+      fileInput.value = '';
+      fileCard.hidden = true;
+    }
+
+    fileInput.addEventListener('change', (e) => { if (e.target.files[0]) setFile(e.target.files[0]); });
+    $('#file-remove').addEventListener('click', clearFile);
+
+    ['dragenter', 'dragover'].forEach((ev) => {
+      dropZone.addEventListener(ev, (e) => { e.preventDefault(); dropZone.classList.add('drop-zone--active'); });
+    });
+    ['dragleave', 'drop'].forEach((ev) => {
+      dropZone.addEventListener(ev, (e) => { e.preventDefault(); dropZone.classList.remove('drop-zone--active'); });
+    });
+    dropZone.addEventListener('drop', (e) => { if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]); });
+
+    runBtn.addEventListener('click', () => {
+      if (scanning) return;
+      hideFieldError(fileError);
+      if (!selectedFile) { showFieldError(fileError, 'Please upload a source file before analyzing.'); return; }
+      runScan();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      clearFile();
+      hideFieldError(fileError);
+      $('#upload-progress').hidden = true;
+      $('#upload-progress-fill').style.width = '0%';
+      hideResults();
+    });
+
+    async function runScan() {
+      scanning = true;
+      runBtn.disabled = true;
+      const progressBlock = $('#upload-progress');
+      const fill = $('#upload-progress-fill');
+      const label = $('#upload-progress-label');
+      const pct = $('#upload-progress-pct');
+      progressBlock.hidden = false;
+      hideResults();
+
+      // Soft progress — visual feedback while backend runs (real scan time varies 5-15s)
+      const stages = [
+        { label: 'Uploading file...', pct: 10 },
+        { label: 'Running Semgrep...', pct: 30 },
+        { label: 'Running Bandit...', pct: 50 },
+        { label: 'Running Gitleaks...', pct: 70 },
+        { label: 'Running detect-secrets...', pct: 85 },
+        { label: 'Merging findings...', pct: 95 },
+      ];
+      let cancelled = false;
+      runStages(stages, { label, fill, pct }, () => {});
+
+      try {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+
+        const resp = await fetch('/scan/file', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!resp.ok) {
+          let msg = `Scan failed (HTTP ${resp.status})`;
+          try {
+            const err = await resp.json();
+            if (err.detail) msg = err.detail;
+          } catch (_) {}
+          throw new Error(msg);
+        }
+
+        const data = await resp.json();
+        cancelled = true;
+        label.textContent = 'Done.';
+        fill.style.width = '100%';
+        pct.textContent = '100%';
+
+        // Brief pause so user sees 100%
+        setTimeout(() => {
+          progressBlock.hidden = true;
+          fill.style.width = '0%';
+          renderResults({
+            source: data.source || ('File scan · ' + selectedFile.name),
+            findings: data.findings || [],
+            tools_run: data.tools_run,
+            tools_failed: data.tools_failed,
+            scan_seconds: data.scan_seconds,
+          });
+          scanning = false;
+          runBtn.disabled = false;
+        }, 400);
+      } catch (e) {
+        cancelled = true;
+        progressBlock.hidden = true;
+        fill.style.width = '0%';
+        showFieldError(fileError, e.message || 'Could not reach the scanner backend. Is it running on port 8000?');
+        scanning = false;
+        runBtn.disabled = false;
+      }
+    }
+  })();
+  </script>
+</body>
+</html>

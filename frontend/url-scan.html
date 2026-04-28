@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebGuard | URL Scanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- PrismJS for syntax highlighting (used in shared results renderer) -->
+  <script src="https://cdn.jsdelivr.net/npm/[email protected]/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/[email protected]/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__inner">
+      <div class="header__brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 2L4 7V15C4 22.5 9 28.5 16 30C23 28.5 28 22.5 28 15V7L16 2Z" fill="white" fill-opacity="0.15"/>
+            <path d="M16 2L4 7V15C4 22.5 9 28.5 16 30C23 28.5 28 22.5 28 15V7L16 2Z" stroke="white" stroke-width="1.5"/>
+            <path d="M11 16L14.5 19.5L21 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">WebGuard</div>
+          <div class="brand-tagline">Security Analysis Platform</div>
+        </div>
+      </div>
+      <nav class="header__nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="scan.html" class="nav-link nav-link--active">Scan Console</a>
+      </nav>
+      <div class="header__actions">
+        <a href="#" class="header-link">Documentation</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="main__inner">
+
+      <div class="scan-subnav">
+        <a href="scan.html" class="scan-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          All scanners
+        </a>
+        <div class="scan-tabs">
+          <a href="url-scan.html" class="scan-tabs__link scan-tabs__link--active">URL</a>
+          <a href="file-upload.html" class="scan-tabs__link">File</a>
+          <a href="code-review.html" class="scan-tabs__link">Code</a>
+        </div>
+      </div>
+
+      <div class="page-header">
+        <div class="page-header__text">
+          <div class="page-eyebrow">
+            <span class="page-eyebrow__dot"></span>
+            URL Scanner
+          </div>
+          <h1 class="page-title">Probe a live target</h1>
+          <p class="page-description">
+            Active reconnaissance against deployed web applications. Checks security headers, TLS configuration, CORS policy, and injection surfaces — without intrusive payloads.
+          </p>
+        </div>
+      </div>
+
+      <section class="console">
+        <div class="console__body">
+          <form class="form" id="url-form" novalidate>
+
+            <div class="form-group">
+              <label class="form-label" for="url-input">
+                Target URL
+                <span class="form-label__required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <span class="input-prefix">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+                </span>
+                <input type="text" id="url-input" class="input" placeholder="https://target.example.com" autocomplete="off" spellcheck="false" />
+              </div>
+              <div class="form-hint">Must begin with <code>http://</code> or <code>https://</code>. Only scan systems you own or have explicit authorization to test.</div>
+              <div class="form-error" id="url-error" role="alert"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Scan profile</label>
+              <div class="radio-group">
+                <label class="radio">
+                  <input type="radio" name="profile" value="quick" />
+                  <span class="radio__mark"></span>
+                  <span class="radio__body">
+                    <span class="radio__title">Quick</span>
+                    <span class="radio__desc">Headers & TLS · ~5s</span>
+                  </span>
+                </label>
+                <label class="radio">
+                  <input type="radio" name="profile" value="standard" checked />
+                  <span class="radio__mark"></span>
+                  <span class="radio__body">
+                    <span class="radio__title">Standard</span>
+                    <span class="radio__desc">+ CORS, XSS · ~30s</span>
+                  </span>
+                </label>
+                <label class="radio">
+                  <input type="radio" name="profile" value="deep" />
+                  <span class="radio__mark"></span>
+                  <span class="radio__body">
+                    <span class="radio__title">Deep</span>
+                    <span class="radio__desc">Full crawl + probes · ~5m</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="checkbox">
+                <input type="checkbox" id="url-authorized" checked />
+                <span class="checkbox__mark"></span>
+                <span>I confirm I have authorization to scan this target</span>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn--primary btn--lg" id="run-url">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Run scan
+              </button>
+              <button type="button" class="btn btn--secondary btn--lg" id="reset-url">Reset</button>
+            </div>
+          </form>
+
+          <div class="progress-block" id="url-progress" hidden>
+            <div class="progress-block__head">
+              <span class="progress-block__label" id="url-progress-label">Initializing scan...</span>
+              <span class="progress-block__pct" id="url-progress-pct">0%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-bar__fill" id="url-progress-fill"></div></div>
+            <div class="progress-block__steps" id="url-progress-steps">
+              <div class="step" data-step="dns">DNS</div>
+              <div class="step" data-step="headers">Headers</div>
+              <div class="step" data-step="tls">TLS</div>
+              <div class="step" data-step="cors">CORS</div>
+              <div class="step" data-step="xss">XSS</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section class="results" id="results-section" hidden>
+        <div class="results__header">
+          <div>
+            <h2 class="results__title">Scan Results</h2>
+            <div class="results__meta" id="results-meta"></div>
+          </div>
+          <div class="results__actions">
+            <button class="btn btn--secondary btn--sm" id="export-json">Export JSON</button>
+            <button class="btn btn--secondary btn--sm" id="export-pdf">Export PDF</button>
+            <button class="btn btn--secondary btn--sm" id="copy-clipboard">Copy</button>
+          </div>
+        </div>
+        <div class="severity-summary" id="severity-summary"></div>
+        <div class="results__table-wrap">
+          <table class="results-table">
+            <thead><tr>
+              <th style="width:50px">#</th>
+              <th style="width:100px">Severity</th>
+              <th style="width:60px">Line</th>
+              <th style="width:140px">Category</th>
+              <th>Finding</th>
+              <th style="width:130px">Code</th>
+              <th style="width:100px">Tool</th>
+              <th style="width:90px">Status</th>
+            </tr></thead>
+            <tbody id="results-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__left">
+        <span>© 2026 WebGuard Security</span>
+        <a href="#" class="footer__link">Privacy</a>
+        <a href="#" class="footer__link">Terms</a>
+      </div>
+      <div class="footer__right">
+        <span class="footer__build">Build: 2.1.0-ent · commit <code>a3f9c7d</code></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="wg-shared.js"></script>
+  <script>
+  (function () {
+    const { $, $$, showFieldError, hideFieldError, runStages, renderResults, hideResults } = WG;
+    let scanning = false;
+
+    const urlInput = $('#url-input');
+    const urlError = $('#url-error');
+    const runBtn = $('#run-url');
+    const resetBtn = $('#reset-url');
+
+    function validate(v) {
+      if (!v) return 'Target URL is required.';
+      if (!/^https?:\/\/.+\..+/i.test(v)) return 'Invalid URL format — must start with http:// or https:// and include a domain.';
+      return null;
+    }
+
+    runBtn.addEventListener('click', () => {
+      if (scanning) return;
+      hideFieldError(urlError);
+      const val = urlInput.value.trim();
+      const err = validate(val);
+      if (err) { showFieldError(urlError, err); urlInput.focus(); return; }
+      const profile = document.querySelector('input[name="profile"]:checked').value;
+      runScan(val, profile);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      urlInput.value = '';
+      hideFieldError(urlError);
+      $('#url-progress').hidden = true;
+      $('#url-progress-fill').style.width = '0%';
+      hideResults();
+    });
+
+    async function runScan(target, profile) {
+      // Check authorization
+      const authBox = $('#url-authorized');
+      if (authBox && !authBox.checked) {
+        showFieldError(urlError, 'You must confirm authorization before scanning a target.');
+        return;
+      }
+
+      scanning = true;
+      runBtn.disabled = true;
+      const progressBlock = $('#url-progress');
+      const fill = $('#url-progress-fill');
+      const label = $('#url-progress-label');
+      const pct = $('#url-progress-pct');
+      const steps = $$('#url-progress-steps .step');
+      progressBlock.hidden = false;
+      steps.forEach((s) => s.classList.remove('step--active', 'step--done'));
+      hideResults();
+
+      // Stage labels — soft progress while real backend runs.
+      // Real scans take 30s-3min depending on profile.
+      const stages = [
+        { label: 'Resolving DNS & probing target...',  pct: 8,  step: 'dns' },
+        { label: 'Reading security headers (httpx)...',pct: 18, step: 'headers' },
+        { label: 'Inspecting TLS/SSL...',              pct: 28, step: 'tls' },
+        { label: 'Probing CORS policy...',             pct: 38, step: 'cors' },
+        { label: 'Running Nikto (web server checks)...',pct: 55 },
+        { label: 'Running Nuclei (CVE templates)...',  pct: 75 },
+        { label: 'Running active probes (sqlmap/XSStrike)...', pct: 90, step: 'xss' },
+      ];
+      runStages(stages, { label, fill, pct, stepEls: steps }, () => {});
+
+      try {
+        const resp = await fetch('/scan/url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: target,
+            profile: profile,
+            authorized: !!(authBox && authBox.checked),
+          }),
+        });
+
+        if (!resp.ok) {
+          let msg = `URL scan failed (HTTP ${resp.status})`;
+          try { const err = await resp.json(); if (err.detail) msg = err.detail; } catch (_) {}
+          throw new Error(msg);
+        }
+
+        const data = await resp.json();
+        label.textContent = 'Done.';
+        fill.style.width = '100%';
+        pct.textContent = '100%';
+        // Mark all steps done visually
+        steps.forEach((s) => { s.classList.remove('step--active'); s.classList.add('step--done'); });
+
+        setTimeout(() => {
+          progressBlock.hidden = true;
+          fill.style.width = '0%';
+          renderResults({
+            source: data.source || ('URL scan · ' + target),
+            findings: data.findings || [],
+            tools_run: data.tools_run,
+            tools_failed: data.tools_failed,
+            scan_seconds: data.scan_seconds,
+          });
+          scanning = false;
+          runBtn.disabled = false;
+        }, 500);
+      } catch (e) {
+        progressBlock.hidden = true;
+        fill.style.width = '0%';
+        showFieldError(urlError, e.message || 'Could not reach the scanner backend.');
+        scanning = false;
+        runBtn.disabled = false;
+      }
+    }
+  })();
+  </script>
+</body>
+</html>

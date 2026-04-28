@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebGuard | Code Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- PrismJS for syntax highlighting in code snippets -->
+  <script src="https://cdn.jsdelivr.net/npm/[email protected]/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/[email protected]/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__inner">
+      <div class="header__brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 2L4 7V15C4 22.5 9 28.5 16 30C23 28.5 28 22.5 28 15V7L16 2Z" fill="white" fill-opacity="0.15"/>
+            <path d="M16 2L4 7V15C4 22.5 9 28.5 16 30C23 28.5 28 22.5 28 15V7L16 2Z" stroke="white" stroke-width="1.5"/>
+            <path d="M11 16L14.5 19.5L21 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">WebGuard</div>
+          <div class="brand-tagline">Security Analysis Platform</div>
+        </div>
+      </div>
+      <nav class="header__nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="scan.html" class="nav-link nav-link--active">Scan Console</a>
+      </nav>
+      <div class="header__actions">
+        <a href="#" class="header-link">Documentation</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="main__inner">
+
+      <div class="scan-subnav">
+        <a href="scan.html" class="scan-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          All scanners
+        </a>
+        <div class="scan-tabs">
+          <a href="url-scan.html" class="scan-tabs__link">URL</a>
+          <a href="file-upload.html" class="scan-tabs__link">File</a>
+          <a href="code-review.html" class="scan-tabs__link scan-tabs__link--active">Code</a>
+        </div>
+      </div>
+
+      <div class="page-header">
+        <div class="page-header__text">
+          <div class="page-eyebrow">
+            <span class="page-eyebrow__dot"></span>
+            Code Review
+          </div>
+          <h1 class="page-title">Review a code snippet</h1>
+          <p class="page-description">
+            Paste a code snippet directly for on-demand static analysis. Ideal for reviewing isolated functions during PR review or quickly testing whether a pattern triggers detections.
+          </p>
+        </div>
+      </div>
+
+      <section class="console">
+        <div class="console__body">
+          <form class="form" id="code-form" novalidate>
+            <div class="form-group">
+              <div class="form-label-row">
+                <label class="form-label" for="code-input">Code snippet</label>
+                <div class="select-group">
+                  <label class="form-sublabel">Language</label>
+                  <select class="select" id="code-lang">
+                    <option>Auto-detect</option>
+                    <option>Python</option>
+                    <option>JavaScript</option>
+                    <option>TypeScript</option>
+                    <option>Java</option>
+                    <option>PHP</option>
+                    <option>Ruby</option>
+                    <option>Go</option>
+                  </select>
+                </div>
+              </div>
+              <div class="editor-wrapper">
+                <div class="editor-gutter" id="editor-gutter">1</div>
+                <textarea class="editor" id="code-input" spellcheck="false"
+                  placeholder="# Paste your code here...&#10;# Example:&#10;&#10;def login(username, password):&#10;    query = f&quot;SELECT * FROM users WHERE name='{username}'&quot;&#10;    return db.execute(query)"></textarea>
+              </div>
+              <div class="form-meta-row">
+                <span class="form-hint">Tip: WebGuard flags injection points, hardcoded secrets, and unsafe functions. Maximum 50,000 characters.</span>
+                <span class="char-count"><span id="char-count">0</span> / 50,000</span>
+              </div>
+              <div class="form-error" id="code-error" role="alert"></div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn--primary btn--lg" id="run-code">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Analyze code
+              </button>
+              <button type="button" class="btn btn--secondary btn--lg" id="reset-code">Clear</button>
+              <button type="button" class="btn btn--ghost btn--lg" id="load-sample">Load sample</button>
+            </div>
+          </form>
+
+          <div class="progress-block" id="code-progress" hidden>
+            <div class="progress-block__head">
+              <span class="progress-block__label" id="code-progress-label">Tokenizing...</span>
+              <span class="progress-block__pct" id="code-progress-pct">0%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-bar__fill" id="code-progress-fill"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="results" id="results-section" hidden>
+        <div class="results__header">
+          <div>
+            <h2 class="results__title">Scan Results</h2>
+            <div class="results__meta" id="results-meta"></div>
+          </div>
+          <div class="results__actions">
+            <button class="btn btn--secondary btn--sm" id="export-json">Export JSON</button>
+            <button class="btn btn--secondary btn--sm" id="export-pdf">Export PDF</button>
+            <button class="btn btn--secondary btn--sm" id="copy-clipboard">Copy</button>
+          </div>
+        </div>
+        <div class="severity-summary" id="severity-summary"></div>
+        <div class="results__table-wrap">
+          <table class="results-table">
+            <thead><tr>
+              <th style="width:50px">#</th>
+              <th style="width:100px">Severity</th>
+              <th style="width:60px">Line</th>
+              <th style="width:140px">Category</th>
+              <th>Finding</th>
+              <th style="width:130px">Code</th>
+              <th style="width:100px">Tool</th>
+              <th style="width:90px">Status</th>
+            </tr></thead>
+            <tbody id="results-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__left">
+        <span>© 2026 WebGuard Security</span>
+        <a href="#" class="footer__link">Privacy</a>
+        <a href="#" class="footer__link">Terms</a>
+      </div>
+      <div class="footer__right">
+        <span class="footer__build">Build: 2.1.0-ent · commit <code>a3f9c7d</code></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="wg-shared.js"></script>
+  <script>
+  (function () {
+    const { $, showFieldError, hideFieldError, runStages, renderResults, hideResults } = WG;
+    let scanning = false;
+    const MAX_CHARS = 50000;
+
+    const codeInput = $('#code-input');
+    const codeError = $('#code-error');
+    const codeGutter = $('#editor-gutter');
+    const charCount = $('#char-count');
+    const runBtn = $('#run-code');
+    const resetBtn = $('#reset-code');
+    const sampleBtn = $('#load-sample');
+
+    function updateGutter() {
+      const lines = codeInput.value.split('\n').length || 1;
+      let g = '';
+      for (let i = 1; i <= lines; i++) g += i + '\n';
+      codeGutter.textContent = g;
+      charCount.textContent = codeInput.value.length.toLocaleString();
+    }
+    codeInput.addEventListener('input', updateGutter);
+    codeInput.addEventListener('scroll', () => { codeGutter.scrollTop = codeInput.scrollTop; });
+    updateGutter();
+
+    const sampleCode = `# Example: vulnerable Python snippet
+import sqlite3
+
+def get_user(username):
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+    # Unsafe string interpolation
+    query = f"SELECT * FROM users WHERE username = '{username}'"
+    cursor.execute(query)
+    return cursor.fetchone()
+
+API_KEY = "sk_live_abc123def456ghi789"
+
+def run_report(cmd):
+    # User input passed to eval — dangerous
+    return eval(cmd)`;
+
+    sampleBtn.addEventListener('click', () => {
+      codeInput.value = sampleCode;
+      updateGutter();
+      hideFieldError(codeError);
+    });
+
+    runBtn.addEventListener('click', () => {
+      if (scanning) return;
+      hideFieldError(codeError);
+      const v = codeInput.value.trim();
+      if (!v) { showFieldError(codeError, 'Code snippet is empty — paste code to analyze.'); return; }
+      if (v.length < 10) { showFieldError(codeError, 'Snippet is too short — provide at least a few meaningful lines.'); return; }
+      if (v.length > MAX_CHARS) { showFieldError(codeError, `Snippet too long (${v.length.toLocaleString()} chars) — maximum is ${MAX_CHARS.toLocaleString()}.`); return; }
+      runScan(v);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      codeInput.value = '';
+      updateGutter();
+      hideFieldError(codeError);
+      $('#code-progress').hidden = true;
+      $('#code-progress-fill').style.width = '0%';
+      hideResults();
+    });
+
+    async function runScan(code) {
+      scanning = true;
+      runBtn.disabled = true;
+      const progressBlock = $('#code-progress');
+      const fill = $('#code-progress-fill');
+      const label = $('#code-progress-label');
+      const pct = $('#code-progress-pct');
+      progressBlock.hidden = false;
+      hideResults();
+
+      // Soft progress while real backend is running
+      const stages = [
+        { label: 'Sending snippet to scanner...', pct: 10 },
+        { label: 'Running Semgrep...', pct: 30 },
+        { label: 'Running Bandit...', pct: 50 },
+        { label: 'Running Gitleaks...', pct: 70 },
+        { label: 'Running detect-secrets...', pct: 85 },
+        { label: 'Merging findings...', pct: 95 },
+      ];
+      runStages(stages, { label, fill, pct }, () => {});
+
+      try {
+        const language = ($('#code-lang').value || 'Auto-detect').toLowerCase().replace('-detect', '');
+        const resp = await fetch('/scan/code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: code, language: language }),
+        });
+
+        if (!resp.ok) {
+          let msg = `Scan failed (HTTP ${resp.status})`;
+          try { const err = await resp.json(); if (err.detail) msg = err.detail; } catch (_) {}
+          throw new Error(msg);
+        }
+
+        const data = await resp.json();
+        label.textContent = 'Done.';
+        fill.style.width = '100%';
+        pct.textContent = '100%';
+
+        setTimeout(() => {
+          progressBlock.hidden = true;
+          fill.style.width = '0%';
+          renderResults({
+            source: data.source || 'Code review · pasted snippet',
+            findings: data.findings || [],
+            tools_run: data.tools_run,
+            tools_failed: data.tools_failed,
+            scan_seconds: data.scan_seconds,
+          });
+          scanning = false;
+          runBtn.disabled = false;
+        }, 400);
+      } catch (e) {
+        progressBlock.hidden = true;
+        fill.style.width = '0%';
+        showFieldError(codeError, e.message || 'Could not reach the scanner backend. Is it running?');
+        scanning = false;
+        runBtn.disabled = false;
+      }
+    }
+  })();
+  </script>
+</body>
+</html>

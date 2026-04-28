@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="WebGuard — find vulnerabilities in web applications and source code before attackers do." />
+  <title>WebGuard | Web Security Analysis Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="header__inner">
+      <div class="header__brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 2L4 7V15C4 22.5 9 28.5 16 30C23 28.5 28 22.5 28 15V7L16 2Z" fill="white" fill-opacity="0.15"/>
+            <path d="M16 2L4 7V15C4 22.5 9 28.5 16 30C23 28.5 28 22.5 28 15V7L16 2Z" stroke="white" stroke-width="1.5"/>
+            <path d="M11 16L14.5 19.5L21 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">WebGuard</div>
+          <div class="brand-tagline">Security Analysis Platform</div>
+        </div>
+      </div>
+      <nav class="header__nav">
+        <a href="index.html" class="nav-link nav-link--active">Home</a>
+        <a href="scan.html" class="nav-link">Scan Console</a>
+      </nav>
+      <div class="header__actions">
+        <a href="#" class="header-link">Documentation</a>
+        <a href="scan.html" class="btn btn--primary btn--sm">Start scanning</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <div class="hero__eyebrow">
+          <span class="hero__eyebrow-dot"></span>
+          Built for offensive security teams
+        </div>
+        <h1 class="hero__title">
+          Find what attackers find — <em>before they do.</em>
+        </h1>
+        <p class="hero__subtitle">
+          WebGuard scans live web applications, source files, and code snippets against a curated rule engine. Surface real vulnerabilities with severity, category, and reproduction context — in seconds, not hours.
+        </p>
+        <div class="hero__actions">
+          <a href="scan.html" class="btn btn--primary btn--lg">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run a scan
+          </a>
+          <a href="#how-it-works" class="btn btn--secondary btn--lg">See how it works</a>
+        </div>
+        <div class="hero__trust">
+          <span class="trust-item">
+            <span class="trust-item__check">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            No account required
+          </span>
+          <span class="trust-item">
+            <span class="trust-item__check">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            OWASP Top 10 coverage
+          </span>
+          <span class="trust-item">
+            <span class="trust-item__check">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            CWE-mapped findings
+          </span>
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <div class="terminal">
+          <div class="terminal__header">
+            <div class="terminal__dots">
+              <span class="terminal__dot terminal__dot--r"></span>
+              <span class="terminal__dot terminal__dot--y"></span>
+              <span class="terminal__dot terminal__dot--g"></span>
+            </div>
+            <div class="terminal__title">webguard — scan session</div>
+          </div>
+          <div class="terminal__body">
+            <span class="term-line"><span class="term-prompt">$</span> <span class="term-cmd">webguard scan https://target.app --profile=standard</span></span>
+            <span class="term-line"><span class="term-out">[+] Resolving DNS........................... </span><span class="term-ok">OK</span></span>
+            <span class="term-line"><span class="term-out">[+] Probing security headers................ </span><span class="term-ok">OK</span></span>
+            <span class="term-line"><span class="term-out">[+] Analyzing TLS/SSL configuration......... </span><span class="term-ok">OK</span></span>
+            <span class="term-line"><span class="term-out">[+] Testing CORS policy..................... </span><span class="term-ok">OK</span></span>
+            <span class="term-line"><span class="term-out">[+] Fingerprinting injection surface........ </span><span class="term-ok">OK</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="term-key">Findings:</span> <span class="term-err">2 critical</span>, <span class="term-warn">3 high</span>, <span class="term-warn">1 medium</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="term-err">CRIT</span>  <span class="term-cmd">INJ-001</span> SQL injection in login endpoint</span>
+            <span class="term-line"><span class="term-err">CRIT</span>  <span class="term-cmd">SEC-021</span> Hardcoded API key in /js/config.js</span>
+            <span class="term-line"><span class="term-warn">HIGH</span>  <span class="term-cmd">HDR-001</span> Missing Content-Security-Policy</span>
+            <span class="term-line"><span class="term-warn">HIGH</span>  <span class="term-cmd">HDR-003</span> X-Frame-Options not set</span>
+            <span class="term-line"><span class="term-warn">HIGH</span>  <span class="term-cmd">COR-002</span> Wildcard CORS on /api/user</span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="term-prompt">$</span> <span class="term-cursor"></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS BAND ============ -->
+  <section class="stats-band">
+    <div class="stats-band__inner">
+      <div class="stat-block">
+        <div class="stat-block__num">240+</div>
+        <div class="stat-block__label">Detection rules</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-block__num">7</div>
+        <div class="stat-block__label">Languages supported</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-block__num">&lt; 5s</div>
+        <div class="stat-block__label">Avg. scan time</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-block__num">98.4%</div>
+        <div class="stat-block__label">Detection accuracy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="section">
+    <div class="section__inner">
+      <div class="section__head">
+        <span class="section__eyebrow">Capabilities</span>
+        <h2 class="section__title">Three ways to <em>analyze</em>, one rule engine.</h2>
+        <p class="section__lede">
+          Whether you're scanning a deployed target, reviewing an uploaded file, or sanity-checking a code snippet during review, WebGuard runs the same battle-tested rule set across every input.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="feature-card__title">URL Scanner</div>
+          <div class="feature-card__desc">
+            Active reconnaissance against live web applications. Probes headers, TLS, CORS, and common injection points without intrusive payloads.
+          </div>
+          <ul class="feature-card__list">
+            <li>Security header analysis</li>
+            <li>TLS/SSL configuration checks</li>
+            <li>CORS policy audit</li>
+            <li>XSS surface fingerprinting</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="feature-card__title">File Upload</div>
+          <div class="feature-card__desc">
+            Static analysis on source files in seven languages. Detects hardcoded secrets, unsafe function calls, and known-vulnerable patterns.
+          </div>
+          <ul class="feature-card__list">
+            <li>Hardcoded credential detection</li>
+            <li>Injection sink identification</li>
+            <li>Cryptographic weakness scan</li>
+            <li>Dependency CVE matching</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <div class="feature-card__title">Code Review</div>
+          <div class="feature-card__desc">
+            Paste a code snippet and get instant feedback. Ideal for reviewing isolated functions during PR review or interview prep.
+          </div>
+          <ul class="feature-card__list">
+            <li>SQL injection patterns</li>
+            <li>RCE via eval/exec</li>
+            <li>Unsafe DOM sinks</li>
+            <li>Auto language detection</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how-it-works" class="section section--alt">
+    <div class="section__inner">
+      <div class="section__head section__head--center">
+        <span class="section__eyebrow">Workflow</span>
+        <h2 class="section__title">Three steps. <em>No setup.</em></h2>
+        <p class="section__lede">
+          From input to actionable findings in under a minute. Built to fit into existing pentest and code review workflows without ceremony.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step-card">
+          <div class="step-card__num">1</div>
+          <div class="step-card__title">Provide a target</div>
+          <div class="step-card__desc">
+            Enter a URL, drop a source file, or paste a code snippet into the console.
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-card__num">2</div>
+          <div class="step-card__title">Run the engine</div>
+          <div class="step-card__desc">
+            WG-Core runs the active rule set against your input — typically completing in under five seconds.
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-card__num">3</div>
+          <div class="step-card__title">Review findings</div>
+          <div class="step-card__desc">
+            Triage results by severity. Export as JSON or PDF, or push directly to your ticketing system.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DETECTIONS (DARK SECTION) ============ -->
+  <section class="section section--dark">
+    <div class="section__inner">
+      <div class="section__head">
+        <span class="section__eyebrow">Detection coverage</span>
+        <h2 class="section__title">Mapped to <em>OWASP & CWE</em>.</h2>
+        <p class="section__lede">
+          Every finding traces back to an industry-standard reference, so your team knows exactly what they're looking at and how to remediate.
+        </p>
+      </div>
+
+      <div class="detect-grid">
+        <div class="detect-item">
+          <span class="detect-item__id">INJ-001</span>
+          <span class="detect-item__name">SQL Injection</span>
+          <span class="detect-item__desc">CWE-89</span>
+        </div>
+        <div class="detect-item">
+          <span class="detect-item__id">XSS-005</span>
+          <span class="detect-item__name">Cross-Site Scripting</span>
+          <span class="detect-item__desc">CWE-79</span>
+        </div>
+        <div class="detect-item">
+          <span class="detect-item__id">RCE-003</span>
+          <span class="detect-item__name">Remote Code Execution</span>
+          <span class="detect-item__desc">CWE-94</span>
+        </div>
+        <div class="detect-item">
+          <span class="detect-item__id">SEC-021</span>
+          <span class="detect-item__name">Hardcoded Credentials</span>
+          <span class="detect-item__desc">CWE-798</span>
+        </div>
+        <div class="detect-item">
+          <span class="detect-item__id">CRY-009</span>
+          <span class="detect-item__name">Weak Cryptography</span>
+          <span class="detect-item__desc">CWE-327</span>
+        </div>
+        <div class="detect-item">
+          <span class="detect-item__id">HDR-001</span>
+          <span class="detect-item__name">Missing Security Headers</span>
+          <span class="detect-item__desc">CWE-693</span>
+        </div>
+        <div class="detect-item">
+          <span class="detect-item__id">COR-002</span>
+          <span class="detect-item__name">CORS Misconfiguration</span>
+          <span class="detect-item__desc">CWE-942</span>
+        </div>
+        <div class="detect-item">
+          <span class="detect-item__id">CKE-004</span>
+          <span class="detect-item__name">Insecure Cookie Flags</span>
+          <span class="detect-item__desc">CWE-614</span>
+        </div>
+        <div class="detect-item">
+          <span class="detect-item__id">DEP-011</span>
+          <span class="detect-item__name">Vulnerable Dependencies</span>
+          <span class="detect-item__desc">CWE-1104</span>
+        </div>
+        <div class="detect-item">
+          <span class="detect-item__id">VAL-014</span>
+          <span class="detect-item__name">Improper Input Validation</span>
+          <span class="detect-item__desc">CWE-20</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA BAND ============ -->
+  <section class="cta-band">
+    <div class="cta-band__inner">
+      <h2 class="cta-band__title">Ready to find what's <em>broken?</em></h2>
+      <p class="cta-band__desc">
+        Open the scan console and run your first analysis. No installation, no signup, no payment information.
+      </p>
+      <div class="cta-band__actions">
+        <a href="scan.html" class="btn btn--primary btn--lg">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Open scan console
+        </a>
+        <a href="#" class="btn btn--secondary btn--lg">Read the docs</a>
+      </div>
+      <div class="cta-band__note">
+        // only scan systems you own or have explicit authorization to test
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__left">
+        <span>© 2026 WebGuard Security</span>
+        <a href="#" class="footer__link">Privacy</a>
+        <a href="#" class="footer__link">Terms</a>
+        <a href="#" class="footer__link">Responsible disclosure</a>
+      </div>
+      <div class="footer__right">
+        <span class="footer__build">Build: 2.1.0-ent · commit <code>a3f9c7d</code></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
