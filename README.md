@@ -2,7 +2,7 @@
 
 > Open-source security analysis tool. Runs locally on your machine. Nothing leaves your laptop.
 
-WebGuard is a self-hosted SAST scanner that wraps four industry-standard tools — **Semgrep**, **Bandit**, **Gitleaks**, and **detect-secrets** — behind a clean web UI.
+WebGuard is a self-hosted SAST scanner that wraps four industry-standard tools  **Semgrep**, **Bandit**, **Gitleaks**, and **detect-secrets**  behind a clean web UI.
 
 Right now, the **File Upload Scanner** is functional. URL Scanner and Code Review (paste) panels exist in the UI but still use placeholder logic; they'll be wired to real backends in upcoming releases.
 
@@ -24,7 +24,7 @@ The File Upload Scanner accepts source files in these languages:
 
 ---
 
-## Quick start (Docker — recommended)
+## Quick start (Docker recommended)
 
 Requires [Docker](https://docs.docker.com/get-docker/) only.
 
@@ -149,7 +149,7 @@ Then open <http://localhost:8000>.
 
 ## Security notes
 
-WebGuard runs **static analysis** only. None of the four scanners *execute* uploaded code — they read it as text and pattern-match against rules.
+WebGuard runs **static analysis** only. None of the four scanners *execute* uploaded code they read it as text and pattern-match against rules.
 
 That said:
 - Run it locally on your own machine. It's not designed to be exposed to the public internet.
